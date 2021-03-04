@@ -6,7 +6,7 @@ import userRoute from './routes/userRoute';
 import productRoute from './routes/productRoute';
 const app = express();
 
-// post request middleware
+// post支持json格式
 app.use(bodyParser.json());
 
 // 指定静态文件目录

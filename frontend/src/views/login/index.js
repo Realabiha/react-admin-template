@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import { Form, Input, Button} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import {getUserList} from '../../apis/index';
+import Footer from '../../components/footer'
 import './index.less'
 const {Item} = Form;
 
 export default class Login extends Component {
   componentDidMount(){
-    console.log(this)
   }
   render() {
-    const initialValues =  {remember: false, username: '', password: '' }
+    const initialValues =  {remember: false, email: '', password: '' }
     return (
-      <div className="login_wrap_com">
+      <div className="login_wrap_wrap">
         <div className="login_header_top"></div>
         <div className="login_main_middle">
           <Form
@@ -21,13 +22,13 @@ export default class Login extends Component {
             onFinish={this.onFinish}
           >
             <Item
-              name="username"
+              name="email"
               rules={[
                 { required: true, message: '请输入用户名' },
                 { min: 5, message: '用户名至少5位'},
                 { max: 10, message: '用户名至少10位'},
-                {whitespace: true, message: '用户名不能为空'},
-                { pattern: /\W+/g, message: '用户名只能是字母、数字和下划线'}
+                { whitespace: true, message: '用户名不能为空'},
+                { pattern: /\w+/g, message: '用户名只能是字母、数字和下划线'}
               ]}
             >
               <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="用户名" />
@@ -50,10 +51,13 @@ export default class Login extends Component {
             </Item>
           </Form>
         </div>
-        <div className="login_footer_bottom">footer...</div>
+        <div className="login_footer_bottom">
+          <Footer />
+        </div>
       </div>
     )
   }
+  // 自定义密码校验
   pwdValidator = (rule, value, callback) => {
     if(!value){
       callback('密码不能为空')
@@ -64,7 +68,9 @@ export default class Login extends Component {
     }
     callback();
   }
-  onFinish = (data)=>{
-    console.log(data)
+  // 表单校验成功
+  onFinish = async (data)=>{
+    const res = await getUserList();
+    console.log(res, 'res');
   }  
 }
