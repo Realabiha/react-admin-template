@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Route, Switch, Redirect} from 'react-router-dom';
 import Login from './views/login';
 import Admin from './views/admin';
 import Test from './views/test';
@@ -11,7 +11,7 @@ function App (){
         <Route path="/login" component={Login}></Route>
         <Route path="/admin" component={Admin}></Route>
         <Route path="/test" component={Test}></Route>
-        {/* <Redirect from="/" to="/test"></Redirect> */}
+        <Redirect from="/" to="/admin"></Redirect>
       </Switch>
     </React.Fragment>
   )

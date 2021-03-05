@@ -1,16 +1,21 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
-const secret = process.env.JWT_SECRET;
-const expires = '1h';
 
-// 加密token header(meta)+payload+signature
+const secret = process.env.JWT_SECRET;
+const expires = '60';
+
+// 加密token 
+// header(meta源信息)+ payload(data存储数据) + signature(sign签名防篡改)
 export function encodeJwt(expiresIn = expires){
   return data => jwt.sign({data}, secret, {expiresIn})
 }
 // 解密token
-export function decodeJwt(){
-  return token => jwt.verify(token, secret)
+export function decodeJwt(res){
+  return token => jwt.verify(token, secret, function(error){
+    const send = fmtResponse('005')(error.message)()
+    res.status(200).send(send);
+  })
 }
 
 // 响应结果处理
@@ -20,17 +25,16 @@ export function fmtResponse(status){
       return {
         status,
         msg,
-        data: res ? _isArray(res) : {}
+        data: _isArray(res)
       }
     }
   }
 }
 
-
-
-function _isArray(res){
+// helper func
+function _isArray(res = {}){
   if(res instanceof Array){
     return [...res]
   }
-  return {...res}
+  return res
 }

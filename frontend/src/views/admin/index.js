@@ -1,52 +1,41 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
-import {testActionType, 
-  testActionTypeAsync, 
-  testActionTypeAsyncOver, 
-  testActionTypeAsync1
-} from '../../actions/testAction'
+import { Redirect } from 'react-router-dom';
+import { message } from 'antd'
+import {logoutAction} from '../../actions/loginAction'
+import { getUserList } from '../../apis';
 class Admin extends Component {
   componentDidMount(){
     console.log(this.props);
   }
   render() {
-    const {test,syncAction,asyncAction,asyncAction1} = this.props;
+    const {userInfo, handleLogout} = this.props;
+    if(!userInfo.isLogin) return <Redirect to="/login" />
     return (
-      <div>
-        <h1 onClick={() => {syncAction()}}>syncAction</h1>
-        <h1 onClick={() => {asyncAction()}}>asyncAction</h1>
-        <h1 onClick={(e) => {asyncAction1(e)}}>asyncAction1</h1>
-        <h1>
-          {test}
-        </h1>
+      <div className="admin_div_wrap">
+        <button onClick={handleLogout}>退出登录</button>
+        <button onClick={this.getUserList}>获取用户列表</button>
       </div>
     )
+  }
+  getUserList = async _ => {
+    const res = await getUserList();
+    if(res.status === '005'){
+      message.warn(res.msg, 1, _ => this.props.handleLogout())
+    }
   }
 }
 function mapStateToProps(state){
   return {
-    test: state.test
+    userInfo: state.userInfo
   }  
 }
 function mapDispatchToProps(dispatch, props){
   return {
-    syncAction: function(){
-      dispatch(testActionType);
-    },
-    asyncAction: function(){
-      setTimeout(function(){
-        dispatch(testActionTypeAsync)
-        setTimeout(function(){
-          dispatch(testActionTypeAsyncOver)
-        }, 500)
-      })
-    },
-    asyncAction1: function(e){
-      dispatch(testActionTypeAsync1(e))
-    }
+    handleLogout: logoutAction
   }
 }
 export default connect(
   mapStateToProps, 
-  mapDispatchToProps
+  mapDispatchToProps()
 )(Admin)

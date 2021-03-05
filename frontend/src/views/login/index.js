@@ -1,18 +1,23 @@
 import React, { Component } from 'react';
 import { Form, Input, Button} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import {getUserList} from '../../apis/index';
+import { connect } from 'react-redux'
+import {Redirect} from 'react-router-dom'
+import { loginAction } from '../../actions/loginAction'
+import { getUserList } from '../../apis/index';
 import Footer from '../../components/footer'
 import './index.less'
 const {Item} = Form;
 
-export default class Login extends Component {
-  componentDidMount(){
-  }
+class Login extends Component {
+  componentDidMount(){}
   render() {
+    const {userInfo: {isLogin}} = this.props;
     const initialValues =  {remember: false, email: '', password: '' }
+
+    if(isLogin) return <Redirect to="/admin" />
     return (
-      <div className="login_wrap_wrap">
+      <div className="login_div_wrap">
         <div className="login_header_top"></div>
         <div className="login_main_middle">
           <Form
@@ -58,19 +63,31 @@ export default class Login extends Component {
     )
   }
   // 自定义密码校验
-  pwdValidator = (rule, value, callback) => {
+  pwdValidator = async (rule, value) => {
     if(!value){
-      callback('密码不能为空')
+      throw Error('密码不能为空')
     }else if(value.length < 5){
-      callback('密码至少5位')
+      throw Error('密码至少5位')
     }else if(/\W+/g.test(value)){
-      callback('密码只能是字母、数字和下划线')
+      throw Error('密码只能是字母、数字和下划线')
     }
-    callback();
   }
   // 表单校验成功
-  onFinish = async (data)=>{
-    const res = await getUserList();
-    console.log(res, 'res');
+  onFinish = (data)=>{
+    console.log(this.props.handleLogin);
+    this.props.handleLogin(data)
   }  
+}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps()
+)(Login)
+
+function mapStateToProps(state){
+  return {userInfo: state.userInfo};
+}
+function mapDispatchToProps(dispatch, props){
+  return {
+    handleLogin: loginAction
+  }
 }
