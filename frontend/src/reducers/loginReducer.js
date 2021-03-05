@@ -4,7 +4,7 @@ const user = localStorage.getItem('user'),
 const userInfo = {
   user: user || {}, 
   token: token || '', 
-  isLogin: (user && token)
+  isLogin: !!(user && token)
 }
 
 function loginReducer(preState = userInfo, action){

@@ -7,19 +7,17 @@ const router = express.Router();
 // 获取用户列表
 router.get('/', async (req, res) => {
   let send;
-  const {token} = req.headers;
-  const decoded = decodeJwt(res)(token);
-  if(decoded){
-    try {
-      const userList = await User.find();
-      if(userList){
-        send = fmtResponse('1')('请求成功')(userList);
-        res.status(200).send(send);
-      }
-    } catch (error) {
-      send = fmtResponse('0')(error.message)()
-      res.status(200).send(send)
+  // const {token} = req.headers;
+  // const decoded = decodeJwt(res)(token);
+  try {
+    const userList = await User.find();
+    if(userList){
+      send = fmtResponse('1')('请求成功')(userList);
+      res.status(200).send(send);
     }
+  } catch (error) {
+    send = fmtResponse('0')(error.message)()
+    res.status(200).send(send)
   }
 })
 

@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const secret = process.env.JWT_SECRET;
-const expires = '60';
+const expires = '1h';
 
 // 加密token 
 // header(meta源信息)+ payload(data存储数据) + signature(sign签名防篡改)
@@ -13,8 +13,10 @@ export function encodeJwt(expiresIn = expires){
 // 解密token
 export function decodeJwt(res){
   return token => jwt.verify(token, secret, function(error){
-    const send = fmtResponse('005')(error.message)()
-    res.status(200).send(send);
+    if(error){
+      const send = fmtResponse('005')(error.message)()
+      res.status(200).send(send);
+    }
   })
 }
 
