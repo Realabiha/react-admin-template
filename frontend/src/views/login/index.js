@@ -3,8 +3,7 @@ import { Form, Input, Button} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import { loginAction } from '../../actions/loginAction'
-import { getUserList } from '../../apis/index';
+import { loginAction } from '../../redux/actions/loginAction'
 import Footer from '../../components/footer'
 import './index.less'
 const {Item} = Form;
@@ -74,7 +73,6 @@ class Login extends Component {
   }
   // 表单校验成功
   onFinish = (data)=>{
-    console.log(this.props.handleLogin);
     this.props.handleLogin(data)
   }  
 }

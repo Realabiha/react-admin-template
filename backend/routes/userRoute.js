@@ -7,8 +7,6 @@ const router = express.Router();
 // 获取用户列表
 router.get('/', async (req, res) => {
   let send;
-  // const {token} = req.headers;
-  // const decoded = decodeJwt(res)(token);
   try {
     const userList = await User.find();
     if(userList){

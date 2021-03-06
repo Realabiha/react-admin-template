@@ -1,5 +1,5 @@
 import {USER_LOGIN_ACTION, USER_LOGOUT_ACTION} from '../actionType';
-import {userLogin} from '../apis/index'
+import {userLogin} from '../../apis/index'
 import {message} from 'antd'
 
 
@@ -29,3 +29,6 @@ export const logoutAction = function(){
     type: USER_LOGOUT_ACTION
   }
 }
+// export const logoutAction = {
+//   type: USER_LOGOUT_ACTION
+// }

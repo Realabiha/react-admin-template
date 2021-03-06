@@ -1,29 +1,48 @@
-import React, { Component } from 'react'
-import {connect} from 'react-redux'
-import { Redirect } from 'react-router-dom';
-import { message } from 'antd'
-import {logoutAction} from '../../actions/loginAction'
-import { getUserList } from '../../apis';
+import React, { Component } from 'react';
+import {connect} from 'react-redux';
+import { Switch, Redirect, Route } from 'react-router-dom';
+import {Layout} from 'antd';
+import Head from './header';
+import Foot from '../../components/footer';
+import Aside from './sider';
+import Category from '../category'
+import Home from '../home'
+import Product from '../product';
+import {logoutAction} from '../../redux/actions/loginAction';
+import './index.less';
+
+const {Header, Footer, Sider, Content} = Layout;
+
 class Admin extends Component {
   componentDidMount(){
-    console.log(this.props);
+
   }
   render() {
-    const {userInfo, handleLogout} = this.props;
-    if(!userInfo.isLogin) return <Redirect to="/login" />
     return (
-      <div className="admin_div_wrap">
-        <button onClick={handleLogout}>退出登录</button>
-        <button onClick={this.getUserList}>获取用户列表</button>
-      </div>
+      <Layout className="admin_layout_wrap">
+        <Sider>
+          <Aside></Aside>
+        </Sider>
+        <Layout>
+          <Header>
+            <Head></Head>
+          </Header>
+          <Content>
+            <Switch>
+              <Route path="/admin/home" component={Home}></Route>
+              <Route path="/admin/pro/category" component={Category}></Route>
+              <Route path="/admin/pro/product" component={Product}></Route>
+              <Redirect to="/admin/home" />
+            </Switch>
+          </Content>
+          <Footer>
+            <Foot />
+          </Footer>
+        </Layout>
+      </Layout>
     )
   }
-  getUserList = async _ => {
-    const res = await getUserList();
-    if(res.status === '005'){
-      message.warn(res.msg, 1, _ => this.props.handleLogout())
-    }
-  }
+ 
 }
 function mapStateToProps(state){
   return {

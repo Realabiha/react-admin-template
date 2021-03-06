@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const secret = process.env.JWT_SECRET;
-const expires = '1h';
+const expires = '10';
 
 // 加密token 
 // header(meta源信息)+ payload(data存储数据) + signature(sign签名防篡改)
