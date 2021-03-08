@@ -13,7 +13,7 @@ import db from '../db/config';
 
 // 表|模型的具体描述
 const userSchema = new mongoose.Schema({
-  name: {type: String},
+  name: {type: String, default: 'user'},
   email: {type: String, required: true, unique: true},
   password: {type: String, required: true},
   isAdmin: {type: Boolean, default: false},

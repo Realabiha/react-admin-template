@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import userRoute from './routes/userRoute';
 import productRoute from './routes/productRoute';
 
-import vt from './middleware/validateToken';
+import verifyToken from './middleware/validateToken';
 const app = express();
 
 // 支持json格式数据请求
@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 // 指定静态文件目录
 app.use(express.static(path.resolve(__dirname, '../frontend/build')));
 
-app.use(vt);
+app.use(verifyToken);
 
 app.use('/users', userRoute);
 app.use('/products', productRoute);

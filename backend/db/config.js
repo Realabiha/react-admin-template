@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
+mongoose.set('useFindAndModify', false)
 // const mongoose = require('mongoose');
 // require('dotenv').config();
 const DB_URL = process.env.DB_URL;
@@ -11,7 +12,7 @@ mongoose.connect(
   { 
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true 
+    useCreateIndex: true
   },
   function(){
     console.log("mongodb connect success")

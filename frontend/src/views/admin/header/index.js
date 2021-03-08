@@ -9,19 +9,16 @@ import './index.less';
 
 const {confirm} = Modal;
 
-
 class Head extends Component {
-
   componentDidMount(){
   }
-
   render() {
     const {user, isLogin} = this.props.userInfo;
-    const {pathname} = this.props.location;
+    const {menuTitle, location} = this.props;
     if(!isLogin) return <Redirect to="/login" />
     return (
       <div className="admin_header_wrap">
-        <div className="admin_header_left">{pathname}</div>
+        <div className="admin_header_left">{menuTitle || location.pathname}</div>
         <div className="admin_header_right">
           <span className="admin_header_user">欢迎您，{user.email}！</span>
           <Button onClick={this.onLogout}>
@@ -44,14 +41,17 @@ class Head extends Component {
         getUserList()  
       }
     })
-    // setTimeout(destroyAllModal, 1000) 
+    setTimeout(destroyAllModal, 5000) 
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps())( withRouter(Head) )
 
 // helper
 function mapStateToProps(state){
-  return {userInfo: state.userInfo}
+  return {
+    userInfo: state.userInfo,
+    menuTitle: state.menuTitle
+  }
 }
 function mapDispatchToProps(dispatch, props){
   // return {

@@ -5,18 +5,14 @@ import {Layout} from 'antd';
 import Head from './header';
 import Foot from '../../components/footer';
 import Aside from './sider';
-import Category from '../category'
-import Home from '../home'
-import Product from '../product';
 import {logoutAction} from '../../redux/actions/loginAction';
+import lazyLoad from '../../lazyLoad'
 import './index.less';
 
 const {Header, Footer, Sider, Content} = Layout;
 
 class Admin extends Component {
-  componentDidMount(){
-
-  }
+  componentDidMount(){}
   render() {
     return (
       <Layout className="admin_layout_wrap">
@@ -29,9 +25,18 @@ class Admin extends Component {
           </Header>
           <Content>
             <Switch>
-              <Route path="/admin/home" component={Home}></Route>
-              <Route path="/admin/pro/category" component={Category}></Route>
-              <Route path="/admin/pro/product" component={Product}></Route>
+              <Route path="/admin/home" component={
+                lazyLoad(() => import('../home'))()
+              }></Route>
+              <Route path="/admin/pro/category" component={
+                lazyLoad(() => import('../category'))()
+              }></Route>
+              <Route path="/admin/pro/product" component={
+                lazyLoad(() => import('../product'))()
+              }></Route>
+              <Route path="/admin/role" component={
+                lazyLoad(() => import('../role'))()
+              }></Route>
               <Redirect to="/admin/home" />
             </Switch>
           </Content>

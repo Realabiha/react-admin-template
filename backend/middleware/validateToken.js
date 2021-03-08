@@ -7,11 +7,17 @@ import dotenv from 'dotenv';
 import {fmtResponse} from '../util'
 dotenv.config();
 
+const apisNoNeedToken = [
+  {url: '/users/signin', method: 'POST'},
+  {url: '/users/register', method: 'POST'},
+  {url: '/users/createAdmin', method: 'GET'},
+]
+
 export default function(req, res, next){
-  // 登录接口跳过
-  if(req.url === '/users/signin' && req.method === 'POST'){
-    return next();
-  }
+  // 接口跳过
+  
+  if(apisNoNeedToken.some(api => req.url === api.url && req.method === api.method))
+  return next();
 
   // 获取token
   const token = req.headers['token'];

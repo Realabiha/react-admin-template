@@ -28,7 +28,7 @@ function beforeResponseSend(response){
     message.error(response.data.msg, 1);
     return;
   }
-  return response.data;
+  return response.data; 
 }
 // 非2xx
 function handleResponseError(error){
